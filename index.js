@@ -1,57 +1,18 @@
-const express=require('express');
-const mongoose=require('mongoose');
-const cors=require('cors');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const app=express();
-app.use(express.json());
-app.use(cors());
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
-
-// schema for foods collection
-
-const foodSchema=new mongoose.Schema({
-    name:String,
-    calories:Number,
-    protein:Number,
-    carbs:Number,
-    fats:Number,
-    fibre:Number,
-    weight:Number,
-
-})
-
-const foodModel=new mongoose.model("food",foodSchema)
-
-
-
-//mongo connection
-mongoose.connect("mongodb://127.0.0.1:27017/nutrition",{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-})
-.then(()=>{
-    console.log("connected");
-})
-
-
-app.post("/food/create",(req,res)=>{
-    const food=req.body;
-    let foodObj=new foodModel(food);
-    foodObj.save().then(()=>{
-     res.send({status:"food stored"});
-})
-})
-
-
-app.get("/foods",async (req,res)=>{
-    let foods=await foodModel.find();
-    res.send({foods:foods});
-})
-
-//app.get('/demo',(req,res)=>{
-//  console.log("get request called");
-//   res.send("response is done");
-//})
-
-app.listen(7000);
-
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
